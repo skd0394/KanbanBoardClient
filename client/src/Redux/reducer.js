@@ -12,10 +12,10 @@ export const authReducer=(state=initialState,action)=>{
             return{
                 ...state,
                 isAuthenticated: false,
-                user: null
+                user: []
             }
         case LOGIN: 
-        console.log('helooooooooo')
+        console.log('helooooooooo',action.payload)
             return{
                 ...state,
                 isAuthenticated : true,

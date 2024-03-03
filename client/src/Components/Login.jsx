@@ -11,22 +11,20 @@ const defaultTheme = createTheme();
 
 export default function Login() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(isAuthenticated);
 
   const handleClick = (e) => {
     e.preventDefault();
-      dispatch(GoogleLogin());
-      window.open("http://localhost:6005/auth/google/callback", "_self");
+    dispatch(GoogleLogin());
+    window.open("http://localhost:6005/auth/google/callback", "_self");
   };
 
   React.useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard", { replace: true });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

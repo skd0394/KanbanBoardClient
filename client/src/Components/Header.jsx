@@ -40,7 +40,7 @@ function Header() {
   };
 
   const handleCloseNavMenu = (e) => {
-    setActiveTab(e.target.value)
+    setActiveTab(e.target.value);
     setAnchorElNav(null);
   };
 
@@ -58,7 +58,18 @@ function Header() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          {user && user.avatar ? (
+            <Avatar
+              src={user.avatar}
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            />
+          ) : (
+            <Avatar
+              src={"/broken-image.jpg"}
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            />
+          )}
+
           <Typography
             variant="h6"
             noWrap
@@ -145,7 +156,7 @@ function Header() {
                   key={page.name}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
-                  variant={activeTab===page.name?"contained":"outlined"}
+                  variant={activeTab === page.name ? "contained" : "outlined"}
                 >
                   {page.name}
                 </Button>

@@ -10,6 +10,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { GoogleLogin } from './Redux/action';
+import Tasks from './Components/Tasks/Tasks';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
   return (
     <>
       {/* <PrivateRoute> */}
-        <Header />
+      <Header />
       {/* </PrivateRoute> */}
       <Routes>
         <Route path="/" element={<Login />} />
@@ -48,6 +49,14 @@ function App() {
             <PrivateRoute>
               <Board />
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/task"
+          element={
+            // <PrivateRoute>
+              <Tasks/>
+            // </PrivateRoute>
           }
         />
         {/* <Route path='/logout' element */}

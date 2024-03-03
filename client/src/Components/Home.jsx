@@ -24,22 +24,31 @@ const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [Boards, setBoards] = React.useState([]);
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    if (Boards.length >= 1) {
+      setOpen(false);
+      window.alert('Cannot create more than one Board')
+    } else {
+      setOpen(true);
+    }
+  };
   const handleClose = () => setOpen(false);
 
   const getData = async () => {
     try {
-      let res = await axios
-        .get("http://localhost:6005/blogs", {
+      await axios
+        .get("http://localhost:6005/board", {
           withCredentials: true,
         })
-        .then((res) => setBoards(res.data.boards));
+        .then((res) => {
+          console.log("res",res)
+          setBoards(res.data.data)
+        });
+      
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log("Boards", Boards);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -51,20 +60,22 @@ const Home = () => {
     console.log("inside handleClick");
     try {
       let res = await axios.post(
-        "http://localhost:6005/user/new-blog",
+        "http://localhost:6005/user/new-board",
         { name: boardName },
         { withCredentials: true }
       );
-      console.log(res);
+      // console.log(res);
       setBoardName("");
-      handleClose();
+      await getData();
+      handleClose()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
 
   React.useEffect(() => {
     getData();
+    // console.log('Inside useEffect',Boards);
   }, []);
 
   return (
@@ -76,14 +87,22 @@ const Home = () => {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Typography variant="h3">Recently Used Boards</Typography>
-        <Box display={"flex"} justifyContent="center" gap={2}>
-          {Boards.map((ele) => (
-            <>
-              <SingleBoard ele={ele} />
-            </>
-          ))}
-        </Box>
+        {Boards.length === 0 ? (
+          <Typography variant="h4">
+            No boards found, Please create or join one
+          </Typography>
+        ) : (
+          <>
+            <Typography variant="h3">Recently Used Boards</Typography>
+            <Box display={"flex"} justifyContent="center" gap={2}>
+              {Boards.map((ele) => (
+                <>
+                  <SingleBoard ele={ele} />
+                </>
+              ))}
+            </Box>
+          </>
+        )}
         <Button onClick={handleOpen} variant={"contained"}>
           Create Board
         </Button>
